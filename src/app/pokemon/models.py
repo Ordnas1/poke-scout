@@ -1,10 +1,27 @@
 from typing import List
-from sqlalchemy import Integer, String, Float, inspect, ForeignKey
+from sqlalchemy import (
+    Integer,
+    String,
+    Float,
+    inspect,
+    ForeignKey,
+    Table,
+    Column,
+)
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from app import db
+from app import db, Base
+
+pokemon_location_area_table = Table(
+    "pokemon_location_area_table",
+    Base.metadata,
+    Column("pokemon_id", ForeignKey("pokemon.id")),
+    Column("location_area_id", ForeignKey("location_area.id")),
+)
 
 
 class Pokemon(db.Model):
+    __tablename__ = "pokemon"
+
     id: Mapped[int] = mapped_column(Integer, unique=True, primary_key=True)
     api_id: Mapped[int] = mapped_column(Integer, unique=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
@@ -25,6 +42,8 @@ class Pokemon(db.Model):
 
 
 class LocationArea(db.Model):
+    __tablename__ = "location_area"
+
     id: Mapped[int] = mapped_column(Integer, unique=True, primary_key=True)
     api_id: Mapped[int] = mapped_column(Integer, unique=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
