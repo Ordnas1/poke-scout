@@ -12,26 +12,47 @@ from .data_fetch import (
 
 from .pokemon_query import PokemonQueryService
 
-from app import db
+from app import db, app
 
 
 class PokeAPIDataLoader:
-    pokemon_to_load = ["ditto", "charizard"]
+    pokemon_to_load = [
+        "pikachu",
+        "dhelmise",
+        "charizard",
+        "parasect",
+        "aerodactyl",
+        "kingler",
+    ]
     query_service = PokemonQueryService(db)
 
     async def load_pokemon_data(self):
+        app.app.logger.info("Initializing pokemon data loading")
         async with PokeAPISessionManager(PokeAPIService()) as svc:
             for pokemon in self.pokemon_to_load:
                 pokemon_in_db = self.query_service.query_pokemon_by_name(
                     pokemon
                 )
                 if pokemon_in_db:
-                    return
+                    app.app.logger.debug(
+                        f"Pokemon {pokemon_in_db} already exists, skipping"
+                    )
+                    continue
 
-                pokemon_data = await svc.fetch_pokemon(pokemon)
+                app.app.logger.debug(f"fetching data for {pokemon}")
+
+                try:
+                    pokemon_data = await svc.fetch_pokemon(pokemon)
+                except Exception as e:
+                    app.app.logger.warning(f"Exception {e}, skipping")
+                    continue
+
                 location_area_encounters_url = pokemon_data[
                     "location_area_encounters"
                 ]
+                app.app.logger.debug(
+                    "fetching location area encounters data for {pokemon}"
+                )
                 location_area_encounters_list = (
                     await svc.fetch_location_area_urls_data(
                         location_area_encounters_url
@@ -39,6 +60,9 @@ class PokeAPIDataLoader:
                 )
                 location_area_ids = []
                 if location_area_encounters_list:
+                    app.app.logger.debug(
+                        "list non-empty, fetching location area"
+                    )
                     for data in location_area_encounters_list:
 
                         location_area_in_db = (
@@ -48,6 +72,10 @@ class PokeAPIDataLoader:
                         )
 
                         if not location_area_in_db:
+                            app.app.logger.debug("no location area in db")
+                            app.app.logger.debug(
+                                f"fetching data for {data['name']}"
+                            )
                             location_area_data = await svc.fetch_location_area(
                                 data["url"]
                             )
@@ -60,6 +88,12 @@ class PokeAPIDataLoader:
                             )
 
                             if not location_in_db:
+                                app.app.logger.debug("no location in db")
+                                app.app.logger.debug(
+                                    f"fetching data for {location_area_data[
+                                        'location_name'
+                                    ]}"
+                                )
                                 location_data = await svc.fetch_location(
                                     location_url
                                 )
@@ -85,10 +119,10 @@ class PokeAPIDataLoader:
                     self.query_service.insert_pokemon_id_location_area_ids(
                         pokemon_in_db.id, location_area_ids
                     )
-                    print(f"Pokemon {pokemon_in_db} loaded")
+                    app.app.logger.info(f"Pokemon {pokemon_in_db} loaded")
 
                 else:
                     pokemon_in_db = self.query_service.create_pokemon(
                         pokemon_data
                     )
-                    print(f"Pokemon {pokemon_in_db} loaded")
+                    app.app.logger.info(f"Pokemon {pokemon_in_db} loaded")
