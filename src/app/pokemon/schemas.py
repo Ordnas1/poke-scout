@@ -7,6 +7,10 @@ class LocationAreaSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = LocationArea
 
+    pokemons = fields.List(
+        fields.Nested(lambda: PokemonSchema(exclude=("location_areas",)))
+    )
+
 
 class LocationSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -23,3 +27,6 @@ class PokemonSchema(ma.SQLAlchemyAutoSchema):
 
 list_pokemon_schema = PokemonSchema(many=True)
 single_pokemon_schema = PokemonSchema()
+
+list_location_areas_schema = LocationAreaSchema(many=True)
+single_location_area_schema = LocationAreaSchema()

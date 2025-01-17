@@ -31,7 +31,8 @@ class Pokemon(db.Model):
     type_one: Mapped[str] = mapped_column(String, nullable=False)
     type_two: Mapped[str] = mapped_column(String, nullable=True)
     location_areas: Mapped[List["LocationArea"]] = relationship(
-        secondary=pokemon_location_area_table
+        secondary=pokemon_location_area_table,
+        back_populates="pokemons"
     )
 
     def to_dict(self):
@@ -52,6 +53,11 @@ class LocationArea(db.Model):
     name: Mapped[str] = mapped_column(String, nullable=False)
     location_id: Mapped[int] = mapped_column(ForeignKey("location.id"))
     location: Mapped["Location"] = relationship(
+        back_populates="location_areas"
+    )
+    
+    pokemons: Mapped[List[Pokemon]] = relationship(
+        secondary=pokemon_location_area_table, 
         back_populates="location_areas"
     )
 
