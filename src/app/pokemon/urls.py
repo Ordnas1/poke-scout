@@ -9,4 +9,11 @@ pokemon_bp = Blueprint("pokemon", __name__)
 def list_pokemons():
     if request.method == "GET":
         return controllers.list_all_pokemon_controller()
-    return "Method not allowed", 405
+    return {"error": "Method not allowed"}, 405
+
+
+@pokemon_bp.route("/pokemon/<id_or_name>", methods=["GET"])
+def get_pokemon(id_or_name):
+    if request.method == "GET":
+        return controllers.get_pokemon(id_or_name)
+    return {"error": "Method not allowed"}, 405

@@ -22,3 +22,4 @@ class PokemonSchema(ma.SQLAlchemyAutoSchema):
 
 
 list_pokemon_schema = PokemonSchema(many=True)
+single_pokemon_schema = PokemonSchema()
