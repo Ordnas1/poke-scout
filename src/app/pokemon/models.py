@@ -30,6 +30,9 @@ class Pokemon(db.Model):
     sprite: Mapped[str] = mapped_column(String, nullable=False)
     type_one: Mapped[str] = mapped_column(String, nullable=False)
     type_two: Mapped[str] = mapped_column(String, nullable=True)
+    location_area: Mapped[List["LocationArea"]] = relationship(
+        secondary=pokemon_location_area_table
+    )
 
     def to_dict(self):
         return {

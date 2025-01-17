@@ -52,7 +52,7 @@ class PokeAPIService:
                 "api_id": data["id"],
                 "name": data["name"],
                 "location_url": data["location"]["url"],
-                "location_name": data["location"]["name"]
+                "location_name": data["location"]["name"],
             }
             return shaped_data
 
@@ -77,4 +77,3 @@ class PokeAPISessionManager:
 
     async def __aexit__(self, exc_type, exc_val, traceback):
         await self.poke_api_service.session.close()
-
