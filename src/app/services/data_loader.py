@@ -26,10 +26,13 @@ class PokeAPIDataLoader:
     ]
     query_service = PokemonQueryService(db)
 
-    async def load_pokemon_data(self):
+    async def load_pokemon_data(self, pokemon_list=None):
         app.app.logger.info("Initializing pokemon data loading")
+        if not pokemon_list:
+            pokemon_list = self.pokemon_to_load
+            
         async with PokeAPISessionManager(PokeAPIService()) as svc:
-            for pokemon in self.pokemon_to_load:
+            for pokemon in pokemon_list:
                 pokemon_in_db = self.query_service.query_pokemon_by_name(
                     pokemon
                 )

@@ -77,3 +77,21 @@ class PokemonQueryService:
         )
         self.db.session.commit()
         return pokemon_id
+
+    def delete_all_data(self):
+        try:
+            rows_pokemon = self.db.session.query(Pokemon).delete()
+            rows_location_area = self.db.session.query(LocationArea).delete()
+            rows_location = self.db.session.query(Location).delete()
+            rows_linked_table = self.db.session.query(
+                pokemon_location_area_table
+            ).delete()
+            self.db.session.commit()
+            return (
+                rows_pokemon
+                + rows_location_area
+                + rows_location
+                + rows_linked_table
+            )
+        except Exception:
+            self.db.session.rollback()
