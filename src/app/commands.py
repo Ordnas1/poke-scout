@@ -30,5 +30,13 @@ def drop_data():
 def load_pokemon(pokemon):
     """Load a single pokemon"""
     data_loader = PokeAPIDataLoader()
-    
+
     asyncio.run(data_loader.load_pokemon_data([pokemon]))
+
+
+@appdata_bp.cli.command("load_data_concurrent")
+def load_data_concurrent():
+    """Loads initial data concurrent"""
+    data_loader = PokeAPIDataLoader()
+
+    asyncio.run(data_loader.load_pokemon_data_concurrent())

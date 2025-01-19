@@ -9,7 +9,7 @@ from app.pokemon.models import (
     pokemon_location_area_table,
 )
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
+from sqlalchemy import select, insert
 
 
 class PokemonQueryService:
@@ -95,3 +95,71 @@ class PokemonQueryService:
             )
         except Exception:
             self.db.session.rollback()
+
+    def insert_bulk_locations(self, location_data_list):
+        try:
+            self.db.session.execute(insert(Location), location_data_list)
+            self.db.session.commit()
+        except Exception as e:
+            print(e)
+            self.db.session.rollback()
+
+    def insert_bulk_location_areas(self, location_area_data_list):
+        try:
+            self.db.session.execute(
+                insert(LocationArea), location_area_data_list
+            )
+            self.db.session.commit()
+        except Exception as e:
+            print(e)
+            self.db.session.rollback()
+
+    def insert_bulk_pokemons(self, pokemon_data_list):
+        try:
+            self.db.session.execute(insert(Pokemon), pokemon_data_list)
+            self.db.session.commit()
+        except Exception as e:
+            print(e)
+            self.db.session.rollback()
+
+    def insert_bulk_pokemon_location_area_links(
+        self, pokemon_location_area_links
+    ):
+        try:
+            self.db.session.execute(
+                pokemon_location_area_table.insert(),
+                pokemon_location_area_links,
+            )
+            self.db.session.commit()
+        except Exception as e:
+            print(e)
+            self.db.session.rollback()
+
+    def select_bulk_locations_by_name(self, location_name_list):
+        return (
+            self.db.session.execute(
+                select(Location).where(Location.name.in_(location_name_list))
+            )
+            .scalars()
+            .all()
+        )
+
+    def select_bulk_location_areas_by_name(self, location_area_name_list):
+        return (
+            self.db.session.execute(
+                select(LocationArea).where(
+                    LocationArea.name.in_(location_area_name_list)
+                )
+            )
+            .scalars()
+            .all()
+        )
+
+    def select_bulk_pokemons_by_name(self, pokemon_name_list):
+        return (
+            self.db.session.execute(
+                select(Pokemon).where(Pokemon.name.in_(pokemon_name_list))
+            )
+            .scalars()
+            .all()
+        )

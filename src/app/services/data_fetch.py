@@ -1,5 +1,5 @@
 import aiohttp
-
+import asyncio
 
 BASE_URL = "https://pokeapi.co/api/v2/"
 
@@ -8,8 +8,11 @@ class PokeAPIService:
     def __init__(self):
         self.session = None
 
-    async def fetch_pokemon(self, pokemon):
-        async with self.session.get(f"{BASE_URL}pokemon/{pokemon}") as resp:
+    async def fetch_pokemon(self, pokemon, session=None):
+        if not session:
+            session = self.session
+
+        async with session.get(f"{BASE_URL}pokemon/{pokemon}") as resp:
             data = await resp.json()
 
             try:
@@ -65,6 +68,47 @@ class PokeAPIService:
                 "region": data["region"]["name"],
             }
             return shaped_data
+
+    def get_fetch_all_pokemon_coroutines(self, pokemon_list):
+        tasks = []
+
+        for pokemon in pokemon_list:
+            task = asyncio.create_task(self.fetch_pokemon(pokemon))
+            tasks.append(task)
+
+        return tasks
+    
+    async def get_pokemon_location_area_coroutines(self, pokemon, lae_url):
+        return [pokemon, await self.fetch_location_area_urls_data(lae_url)]
+
+    def get_fetch_location_areas_mapping_coroutines(self, p_lae_map):
+        tasks = []
+
+        for pk, lae_url in p_lae_map.items():
+            task = asyncio.create_task(
+                self.get_pokemon_location_area_coroutines(pk, lae_url)
+            )
+            tasks.append(task)
+        return tasks
+    
+    def get_fetch_location_area_coroutines(self, location_area_urls):
+        tasks = []
+
+        for url in location_area_urls:
+            task = asyncio.create_task(self.fetch_location_area(url))
+            tasks.append(task)
+        return tasks
+    
+    def get_fetch_all_location_coroutines(self, location_list):
+        tasks = []
+        
+        for location in location_list:
+            task = asyncio.create_task(
+                self.fetch_location(location)
+            )
+            tasks.append(task)
+            
+        return tasks
 
 
 class PokeAPISessionManager:
