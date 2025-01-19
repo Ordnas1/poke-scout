@@ -13,4 +13,12 @@ class DevelopmentConfig(Config):
     )
 
 
-config = {"development": DevelopmentConfig}
+class TestingConfig(Config):
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = (
+        f"sqlite:///{os.getenv("DEVELOPMENT_DATABASE_FILENAME")}"
+    )
+
+
+config = {"development": DevelopmentConfig, "testing": TestingConfig}
