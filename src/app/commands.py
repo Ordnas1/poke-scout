@@ -11,6 +11,8 @@ appdata_bp = Blueprint("appdata", __name__)
 
 @appdata_bp.cli.command("load_data")
 def load_data():
+    """Load data from the default list
+    Pikachu, Dhelmise, Charizard, Parasect, Aerodactyl and Kingler"""
     data_loader = PokeAPIDataLoader()
 
     asyncio.run(data_loader.load_pokemon_data_concurrent())
@@ -27,8 +29,7 @@ def drop_data():
 @appdata_bp.cli.command("load_pokemon")
 @click.argument("pokemon")
 def load_pokemon(pokemon):
-    """Load a single pokemon"""
+    """Load a single pokemon by name"""
     data_loader = PokeAPIDataLoader()
 
     asyncio.run(data_loader.load_pokemon_data_concurrent([pokemon]))
-

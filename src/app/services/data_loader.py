@@ -18,15 +18,16 @@ from app import db
 
 
 class PokeAPIDataLoader:
+    # if you wish to load other pokemons, you can also edit this list
     pokemon_to_load = [
         "pikachu",
         "dhelmise",
         "charizard",
         "parasect",
-        "aerodactyl",
+        "terodactyl",
         "kingler",
-        "victini",
     ]
+
     query_service = PokemonQueryService(db)
 
     async def load_pokemon_data_concurrent(self, pokemon_list=None):
@@ -34,7 +35,7 @@ class PokeAPIDataLoader:
         PokemonQueryService
 
         Args:
-            pokemon_list (_type_, optional): a list of pokemon names. Defaults 
+            pokemon_list (_type_, optional): a list of pokemon names. Defaults
             to None.
         """
         # 1. for each pokemon in pokemon list, if not on db
@@ -64,10 +65,14 @@ class PokeAPIDataLoader:
                 else:
                     pokemon_to_fetch.append(pokemon)
 
-            pokemon_data = await asyncio.gather(
-                *svc.get_fetch_all_pokemon_coroutines(pokemon_to_fetch),
-                return_exceptions=True,
-            )
+            pokemon_data = [
+                p
+                for p in await asyncio.gather(
+                    *svc.get_fetch_all_pokemon_coroutines(pokemon_to_fetch),
+                    return_exceptions=True,
+                )
+                if not isinstance(p, Exception)
+            ]
 
             pokemon_la_map = {
                 p["name"]: p["location_area_encounters"] for p in pokemon_data
