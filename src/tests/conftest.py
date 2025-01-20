@@ -1,5 +1,6 @@
 import pytest
 from app import create_app, db
+from app.services.pokemon_query import PokemonQueryService
 
 
 @pytest.fixture()
@@ -21,3 +22,8 @@ def client(app):
 @pytest.fixture()
 def runner(app):
     return app.test_cli_runner()
+
+
+@pytest.fixture()
+def pokemon_query():
+    return PokemonQueryService(db)
