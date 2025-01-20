@@ -25,11 +25,18 @@ class PokeAPIDataLoader:
         "parasect",
         "aerodactyl",
         "kingler",
-        "victini"
+        "victini",
     ]
     query_service = PokemonQueryService(db)
 
     async def load_pokemon_data_concurrent(self, pokemon_list=None):
+        """Loads pokemon into database using PokeApiService and
+        PokemonQueryService
+
+        Args:
+            pokemon_list (_type_, optional): a list of pokemon names. Defaults 
+            to None.
+        """
         # 1. for each pokemon in pokemon list, if not on db
         # already gather all pk and then fetch all data.
         # 2. create a pokemon:area location name map by fetching the
@@ -52,6 +59,7 @@ class PokeAPIDataLoader:
                     pokemon
                 )
                 if pokemon_in_db:
+                    print(f"{pokemon} in db. skipping")
                     continue
                 else:
                     pokemon_to_fetch.append(pokemon)
@@ -93,7 +101,8 @@ class PokeAPIDataLoader:
                 )
 
                 la_l_map = {
-                    la["name"]: la["location_name"] for la in location_area_data
+                    la["name"]: la["location_name"]
+                    for la in location_area_data
                 }
 
                 location_name_url_list = [

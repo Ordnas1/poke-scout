@@ -5,7 +5,11 @@ PIP = $(VENV)/bin/pip
 
 # Targets
 install: $(VENV)/bin/activate
-	$(PIP) install -r requirements.txt
+	. $(VENV)/bin/activate;
+	$(PIP) install -r requirements.txt;
 
-run: $(VENV)/bin/activate
+serve: $(VENV)/bin/activate
 	$(PYTHON) -m flask --app ./src/app/app.py run
+
+test: $(VENV)/bin/activate
+	coverage run -m pytest

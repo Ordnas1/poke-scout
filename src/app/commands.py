@@ -11,10 +11,9 @@ appdata_bp = Blueprint("appdata", __name__)
 
 @appdata_bp.cli.command("load_data")
 def load_data():
-    """Loads initial data"""
     data_loader = PokeAPIDataLoader()
 
-    asyncio.run(data_loader.load_pokemon_data())
+    asyncio.run(data_loader.load_pokemon_data_concurrent())
 
 
 @appdata_bp.cli.command("drop_data")
@@ -31,12 +30,5 @@ def load_pokemon(pokemon):
     """Load a single pokemon"""
     data_loader = PokeAPIDataLoader()
 
-    asyncio.run(data_loader.load_pokemon_data([pokemon]))
+    asyncio.run(data_loader.load_pokemon_data_concurrent([pokemon]))
 
-
-@appdata_bp.cli.command("load_data_concurrent")
-def load_data_concurrent():
-    """Loads initial data concurrent"""
-    data_loader = PokeAPIDataLoader()
-
-    asyncio.run(data_loader.load_pokemon_data_concurrent())
