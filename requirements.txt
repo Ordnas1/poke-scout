@@ -38,6 +38,9 @@ propcache==0.2.1
 pycodestyle==2.12.1
 pyflakes==3.2.0
 pytest==8.3.4
+pytest-aiohttp==1.0.5
+pytest-asyncio==0.25.2
+pytest-mock==3.14.0
 python-dotenv==1.0.1
 pytz==2024.2
 six==1.17.0

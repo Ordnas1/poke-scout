@@ -3,6 +3,7 @@ line-length = 79
 
 [tool.pytest.ini_options]
 testpaths = ["src/tests"]
+asyncio_mode = "auto"
 
 [tool.coverage.run]
 branch = true
