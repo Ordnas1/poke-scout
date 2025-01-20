@@ -5,7 +5,7 @@ Poke-Scout is a web application that allows users to explore Pokémon data fetch
 
 ## Installation
 From the top of the project:
-- create a virtualenv (highly, highly recommended).
+- create and activate a virtualenv (highly, highly recommended).
 - run the `make install` command or `pip install -r requirements.txt`.
 
 ## Usage
