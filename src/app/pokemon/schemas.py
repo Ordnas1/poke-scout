@@ -22,7 +22,9 @@ class PokemonSchema(ma.SQLAlchemyAutoSchema):
         model = Pokemon
         include_fk = True
 
-    location_areas = fields.List(fields.Nested(LocationAreaSchema))
+    location_areas = fields.List(
+        fields.Nested(LocationAreaSchema(exclude=("pokemons",)))
+    )
 
 
 list_pokemon_schema = PokemonSchema(many=True)

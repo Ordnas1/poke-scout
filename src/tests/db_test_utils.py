@@ -1,5 +1,11 @@
 from sqlalchemy import insert
 from flask_sqlalchemy import SQLAlchemy
+from app.pokemon.models import (
+    Location,
+    LocationArea,
+    Pokemon,
+    pokemon_location_area_table,
+)
 
 
 def load_test_db(db: SQLAlchemy):
@@ -57,8 +63,28 @@ def load_test_db(db: SQLAlchemy):
             "type_two": "dark",
         },
     ]
+    pokemon_location_area_ids = [
+        {"pokemon_id": 1, "location_area_id": 1},
+        {"pokemon_id": 1, "location_area_id": 2},
+        {"pokemon_id": 1, "location_area_id": 3},
+        {"pokemon_id": 1, "location_area_id": 4},
+        {"pokemon_id": 3, "location_area_id": 2},
+        {"pokemon_id": 3, "location_area_id": 3},
+        {"pokemon_id": 4, "location_area_id": 1},
+        {"pokemon_id": 4, "location_area_id": 3},
+        {"pokemon_id": 4, "location_area_id": 4},
+    ]
 
     try:
-        db.session.execute(insert("location").values(locations))
+        db.session.execute(insert(Location).values(locations))
+        db.session.execute(insert(LocationArea).values(location_areas))
+        db.session.execute(insert(Pokemon).values(pokemons))
+        db.session.execute(
+            insert(pokemon_location_area_table).values(
+                pokemon_location_area_ids
+            )
+        )
+        db.session.commit()
     except Exception as e:
         print(e)
+        db.session.rollback()
