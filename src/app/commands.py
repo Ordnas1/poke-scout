@@ -1,3 +1,4 @@
+"""CLI commands registered here"""
 import click
 import asyncio
 from flask import Blueprint

@@ -1,3 +1,4 @@
+"""Pokemon Models"""
 from typing import List
 from sqlalchemy import (
     Integer,

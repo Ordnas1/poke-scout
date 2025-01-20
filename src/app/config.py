@@ -1,3 +1,4 @@
+"""Config classes for any of the possible app configurations"""
 import os
 
 

@@ -1,3 +1,4 @@
+"""Pokemon Marshmallow Schemas for serialization"""
 from marshmallow import fields
 from app import ma
 from .models import Pokemon, LocationArea, Location

@@ -9,6 +9,10 @@ From the top of the project:
 - run the `make install` command or `pip install -r requirements.txt`.
 
 ## Usage
+### Database
+The project uses SQLite3 as a database. Before using the app, we must configure it.
+To load the db schemas and tables, run `make init-db` on the project root or `flask db upgrade`
+
 ### Data loader
 The application needs to initially load the pokemon data before it can be effectively used. On the app folder you can use the following commands:
 
@@ -30,5 +34,5 @@ to serve the API, from the app folder run `flask run`, or run `make serve` from 
 - `GET /api/v1/locations`: List all locations
 - `GET /api/v1/locations/<id_or_name>`: Get details of a specific location by ID or name.
 
-## testing
+## Testing
 From the project root, run either `make test` or `coverage run -m pytest`. You can get a coverage report by running `coverage report`.

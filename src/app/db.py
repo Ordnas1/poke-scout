@@ -1,3 +1,5 @@
+"""DB object integration, created to prevent circular imports on the app
+factory"""
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_marshmallow import Marshmallow
