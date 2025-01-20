@@ -1,3 +1,4 @@
+"""Here we save api versions and register the corresponding blueprints"""
 from flask import Blueprint
 from .pokemon.urls import pokemon_bp
 
