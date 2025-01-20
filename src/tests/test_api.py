@@ -18,7 +18,7 @@ def test_get_single_pokemon(app, client):
         "location_areas": [
             {"api_id": 1, "id": 1, "name": "dev-area-north"},
             {"api_id": 2, "id": 2, "name": "dev-area-south"},
-            {"api_id": 100, "id": 3, "name": "stage-area-south"},
+            {"api_id": 100, "id": 3, "name": "stage-area-north"},
             {"api_id": 101, "id": 4, "name": "stage-area-south"},
         ],
         "name": "Poke_test_1",

@@ -2,7 +2,7 @@
 line-length = 79
 
 [tool.pytest.ini_options]
-testpaths = ["./src/tests"]
+testpaths = ["src/tests"]
 
 [tool.coverage.run]
 branch = true

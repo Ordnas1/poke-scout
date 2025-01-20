@@ -17,7 +17,7 @@ def load_test_db(db: SQLAlchemy):
     location_areas = [
         {"id": 1, "api_id": 1, "name": "dev-area-north", "location_id": 1},
         {"id": 2, "api_id": 2, "name": "dev-area-south", "location_id": 1},
-        {"id": 3, "api_id": 100, "name": "stage-area-south", "location_id": 2},
+        {"id": 3, "api_id": 100, "name": "stage-area-north", "location_id": 2},
         {"id": 4, "api_id": 101, "name": "stage-area-south", "location_id": 2},
     ]
 
