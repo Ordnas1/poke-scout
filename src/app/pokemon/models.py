@@ -9,7 +9,12 @@ from sqlalchemy import (
     Column,
 )
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from app import db, Base
+from app.db import db
+
+
+class Base(db.Model):
+    __abstract__ = True
+
 
 pokemon_location_area_table = Table(
     "pokemon_location_area_table",
@@ -70,6 +75,7 @@ class LocationArea(db.Model):
 
 
 class Location(db.Model):
+    __tablename__ = "location"
     id: Mapped[int] = mapped_column(Integer, unique=True, primary_key=True)
     api_id: Mapped[int] = mapped_column(Integer, unique=True)
     name: Mapped[str] = mapped_column(String, nullable=False)

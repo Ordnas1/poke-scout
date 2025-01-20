@@ -4,7 +4,7 @@ from flask import Blueprint
 
 from .services.data_loader import PokeAPIDataLoader
 from .services.pokemon_query import PokemonQueryService
-from app import app, db
+from app import db
 
 appdata_bp = Blueprint("appdata", __name__)
 
@@ -22,7 +22,7 @@ def drop_data():
     """Clears all the data from the database"""
     query_svc = PokemonQueryService(db)
     total_deleted = query_svc.delete_all_data()
-    app.app.logger.info(f"Deleted {total_deleted} records")
+    print(f"{total_deleted} rows deleted")
 
 
 @appdata_bp.cli.command("load_pokemon")
